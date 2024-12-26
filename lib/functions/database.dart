@@ -16,11 +16,16 @@ Future initdb() async {
   return database;
 }
 
-Future<void> insertDb(Map<String, String> data) async {
+Future<void> insertDb(Map<String, dynamic> data) async {
   final db = await initdb();
   await db.insert(
     'tasks',
     data,
     ConflictAlgorithm: ConflictAlgorithm.replace,
   );
+}
+
+Future<List<Map<String, dynamic>>> featchAllTasks() async {
+  final db = await initdb();
+  return await db.query('tasks');
 }
