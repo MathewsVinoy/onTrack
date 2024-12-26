@@ -32,7 +32,8 @@ class AddPage extends StatelessWidget {
                 "task": titleController.text,
                 "discription": dripController.text
               };
-              await insertDb(data);
+              await DataBaseHelper().insertDb(data);
+              Navigator.of(context).pop();
             },
             child: const Text("Submit"),
           ),

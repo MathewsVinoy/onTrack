@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ontrack/functions/cardview.dart';
 import 'package:ontrack/functions/database.dart';
 import 'package:ontrack/pages/addpage.dart';
 
@@ -7,7 +8,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<List<Map<String, dynamic>>> data = featchAllTasks();
+    Future<List<Map<String, dynamic>>> data = DataBaseHelper().featchAllTasks();
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -18,13 +19,31 @@ class HomePage extends StatelessWidget {
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: data,
         builder: (ctx, spst) {
-          final tasks = spst.data!;
-          return ListView.builder(
+          if (spst.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (spst.hasError) {
+            return Center(
+              child: Text('Error: ${spst.error}'),
+            );
+          } else if (!spst.hasData || spst.data!.isEmpty) {
+            return Center(
+              child: Text("no data"),
+            );
+          } else {
+            final tasks = spst.data!;
+            return ListView.builder(
               itemCount: tasks.length,
               itemBuilder: (ctx, idx) {
                 final task = tasks[idx];
-                return Text(task['task']);
-              });
+                return CardView(
+                  task: task['task'],
+                  descption: task['discription'],
+                );
+              },
+            );
+          }
         },
       ),
       floatingActionButton: FloatingActionButton(

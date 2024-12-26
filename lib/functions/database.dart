@@ -1,31 +1,49 @@
-import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-Future initdb() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  final database = openDatabase(
-    join(await getDatabasesPath(), 'main_database.db'),
-    onCreate: (db, version) {
-      return db.execute(
-        'CREATE TABLE todotb(id INTEGER PRIMARY KEY, task TEXT, discription TEXT)',
-      );
-    },
-    version: 1,
-  );
-  return database;
-}
+class DataBaseHelper {
+  static final DataBaseHelper _instance = DataBaseHelper._internal();
+  static Database? _database;
+  factory DataBaseHelper() {
+    return _instance;
+  }
+  DataBaseHelper._internal();
 
-Future<void> insertDb(Map<String, dynamic> data) async {
-  final db = await initdb();
-  await db.insert(
-    'tasks',
-    data,
-    ConflictAlgorithm: ConflictAlgorithm.replace,
-  );
-}
+  Future<Database?> get database async {
+    if (_database != null) return _database;
+    _database = await initdb();
+    return _database;
+  }
 
-Future<List<Map<String, dynamic>>> featchAllTasks() async {
-  final db = await initdb();
-  return await db.query('tasks');
+  Future<Database> initdb() async {
+    final database = openDatabase(
+      join(await getDatabasesPath(), 'main_database.db'),
+      onCreate: (db, version) {
+        return db.execute(
+          'CREATE TABLE tasks(id INTEGER PRIMARY KEY, task TEXT NOT NULL, discription TEXT)',
+        );
+      },
+      version: 1,
+    );
+    return database;
+  }
+
+  Future<void> insertDb(Map<String, dynamic> data) async {
+    final db = await DataBaseHelper().database;
+    await db?.insert('tasks', data);
+  }
+
+  Future<List<Map<String, dynamic>>> featchAllTasks() async {
+    final db = await DataBaseHelper().database;
+    return await db!.query('tasks');
+  }
+
+  Future<void> deleteTask(int id) async {
+    final db = await DataBaseHelper().database;
+    await db?.delete(
+      'tasks',
+      where: 'id=?',
+      whereArgs: [id],
+    );
+  }
 }
