@@ -33,7 +33,7 @@ class HomePage extends StatelessWidget {
             );
           } else {
             final tasks = spst.data!;
-            return ListqView.builder(
+            return ListView.builder(
               itemCount: tasks.length,
               itemBuilder: (ctx, idx) {
                 final task = tasks[idx];
