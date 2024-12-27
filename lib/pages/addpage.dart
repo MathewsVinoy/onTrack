@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:ontrack/functions/database.dart';
+import 'package:ontrack/pages/homepage.dart';
 
 class AddPage extends StatelessWidget {
   const AddPage({super.key});
@@ -27,13 +30,20 @@ class AddPage extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () async {
+              Random random = Random();
+              int idno = random.nextInt(100000);
               Map<String, dynamic> data = {
-                "id": 1,
+                "id": idno,
                 "task": titleController.text,
                 "discription": dripController.text
               };
               await DataBaseHelper().insertDb(data);
-              Navigator.of(context).pop();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (ctx) => const HomePage(),
+                ),
+              );
             },
             child: const Text("Submit"),
           ),

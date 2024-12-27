@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
         future: data,
         builder: (ctx, spst) {
           if (spst.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           } else if (spst.hasError) {
@@ -28,18 +28,19 @@ class HomePage extends StatelessWidget {
               child: Text('Error: ${spst.error}'),
             );
           } else if (!spst.hasData || spst.data!.isEmpty) {
-            return Center(
+            return const Center(
               child: Text("no data"),
             );
           } else {
             final tasks = spst.data!;
-            return ListView.builder(
+            return ListqView.builder(
               itemCount: tasks.length,
               itemBuilder: (ctx, idx) {
                 final task = tasks[idx];
                 return CardView(
                   task: task['task'],
                   descption: task['discription'],
+                  id: task['id'],
                 );
               },
             );
