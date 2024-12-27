@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ontrack/functions/cardview.dart';
+import 'package:ontrack/functions/colors.dart';
 import 'package:ontrack/functions/database.dart';
+import 'package:ontrack/functions/refresh_screen.dart';
 import 'package:ontrack/pages/addpage.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -9,11 +12,12 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future<List<Map<String, dynamic>>> data = DataBaseHelper().featchAllTasks();
+    final provider = Provider.of<RefreshScreen>(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "onTrack",
-          style: TextStyle(color: Color.fromARGB(255, 22, 134, 7)),
+          style: TextStyle(color: mainColor),
         ),
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
@@ -38,9 +42,11 @@ class HomePage extends StatelessWidget {
               itemBuilder: (ctx, idx) {
                 final task = tasks[idx];
                 return CardView(
-                  task: task['task'],
-                  descption: task['discription'],
-                  id: task['id'],
+                  task: task,
+                  onPressed: () async {
+                    await DataBaseHelper().deleteTask(task['id']);
+                    provider.refreshList();
+                  },
                 );
               },
             );
