@@ -62,6 +62,7 @@ class HomePage extends StatelessWidget {
             ),
           );
         },
+        backgroundColor: mainColor.withOpacity(0.5),
         child: const Icon(Icons.add),
       ),
     );

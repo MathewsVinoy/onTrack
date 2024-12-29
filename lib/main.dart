@@ -16,11 +16,13 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [ChangeNotifierProvider(create: (context) => RefreshScreen())],
       child: MaterialApp(
+        color: mainColor,
         title: 'Flutter Demo',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: mainColor),
-          useMaterial3: true,
         ),
+        darkTheme: ThemeData.dark(useMaterial3: true),
+        themeMode: ThemeMode.system,
         home: const HomePage(),
       ),
     );
