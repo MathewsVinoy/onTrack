@@ -11,7 +11,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<List<Map<String, dynamic>>> data = DataBaseHelper().featchAllTasks();
+    Future<List<Map<String, dynamic>>> data = DataBaseHelper().fetchAllTasks();
     final provider = Provider.of<RefreshScreen>(context);
     return Scaffold(
       appBar: AppBar(

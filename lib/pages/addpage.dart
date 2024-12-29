@@ -37,7 +37,7 @@ class AddPage extends StatelessWidget {
                 "task": titleController.text,
                 "discription": dripController.text
               };
-              await DataBaseHelper().insertDb(data);
+              await DataBaseHelper().insertDb(data, 'tasks');
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
