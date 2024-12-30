@@ -26,7 +26,7 @@ class _NaveBarCompState extends State<NaveBarComp> {
       ),
       body: screen[index], // Change here
       bottomNavigationBar: NavigationBarTheme(
-        data: NavigationBarThemeData(
+        data: const NavigationBarThemeData(
             indicatorColor: Color.fromARGB(255, 255, 255, 255)),
         child: NavigationBar(
           selectedIndex: index,
