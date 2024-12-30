@@ -15,7 +15,7 @@ class CardView extends StatelessWidget {
         trailing: IconButton(
           onPressed: onPressed,
           icon: Icon(
-            Icons.delete,
+            Icons.check_circle_outline,
             color: mainColor,
           ),
         ),

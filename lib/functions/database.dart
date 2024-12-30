@@ -25,14 +25,14 @@ class DataBaseHelper {
         );
         // Create notes table
         await db.execute(
-          'CREATE TABLE notes(id INTEGER PRIMARY KEY, title TEXT NOT NULL, content TEXT)',
+          'CREATE TABLE notes(id INTEGER PRIMARY KEY, task TEXT NOT NULL, discription TEXT)',
         );
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) {
           // Create notes table if upgrading from version 1
           await db.execute(
-            'CREATE TABLE notes(id INTEGER PRIMARY KEY, title TEXT NOT NULL, content TEXT)',
+            'CREATE TABLE notes(id INTEGER PRIMARY KEY, task TEXT NOT NULL, discription TEXT)',
           );
         }
       },

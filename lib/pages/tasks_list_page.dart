@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:ontrack/functions/colors.dart';
+import 'package:ontrack/functions/cardview.dart';
 import 'package:ontrack/functions/database.dart';
 import 'package:ontrack/functions/refresh_screen.dart';
 import 'package:provider/provider.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class TasksListPage extends StatelessWidget {
+  const TasksListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Future<List<Map<String, dynamic>>> data = DataBaseHelper().fetchAllNotes();
+    Future<List<Map<String, dynamic>>> data = DataBaseHelper().fetchAllTasks();
     final provider = Provider.of<RefreshScreen>(context);
     return FutureBuilder<List<Map<String, dynamic>>>(
       future: data,
@@ -32,24 +32,13 @@ class HomePage extends StatelessWidget {
             itemCount: tasks.length,
             itemBuilder: (ctx, idx) {
               final task = tasks[idx];
-              return Card(
-                child: Column(
-                  children: [
-                    ListTile(
-                      title: Text(task['task'].toString()),
-                      subtitle: Text(task['discription'].toString()),
-                    ),
-                    ElevatedButton(
-                      onPressed: () async {
-                        await DataBaseHelper().deleteNote(task['id']);
-                        provider.refreshList();
-                      },
-                      style: ButtonStyle(
-                          backgroundColor: WidgetStatePropertyAll(mainColor)),
-                      child: const Text("Complete"),
-                    )
-                  ],
-                ),
+              return CardView(
+                task: task,
+                onPressed: () async {
+                  await DataBaseHelper().insertDb(task, 'notes');
+                  await DataBaseHelper().deleteTask(task['id']);
+                  provider.refreshList();
+                },
               );
             },
           );
